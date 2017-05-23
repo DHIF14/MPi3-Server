@@ -1,0 +1,3 @@
+# ignore IntelliJ IDEA specific content
+.idea
+MPi3-Server.iml
