@@ -10,14 +10,11 @@ import java.util.logging.Logger;
 /**
  * Created by Michael Krickl and Benedikt Breid in 2017.
  */
-public class Server
-    implements Runnable {
-  
-  private Logger logger;
+public class Server {
   
   private ServerSocket socket;
-  
   private List<Connection> connections = new ArrayList<>();
+  private Logger logger;
   
   public Server(int port)
       throws IOException {
@@ -27,44 +24,11 @@ public class Server
     
     logger.info("init");
     
-    new Thread(this).start();
-  }
-  
-  @Override
-  public void run() {
-    
-    logger.info("Thread started");
-    
-    while(true) {
-      try {
-        logger.info("listening for new Connections");
-    
-        Connection c = new Connection(this, socket.accept());
-        connections.add(c);
-        
-        logger.info("new Connection: " + c.toString());
-    
-      } catch (SocketException e) {
-    
-        if (socket.isClosed()) {
-          logger.info("save Thread interrupt");
-          break;
-        }
-        logger.warning("unknown Exception when accepting Connection: " + e.getMessage());
-    
-      } catch (Exception e) {
-        logger.severe("unknown Exception when accepting Connection: " + e.getMessage());
-        close();
-        break;
-      }
-    }
-    logger.info("not accepting new Connections");
-    
-    logger.info("Thread stopped");
+    new Thread().start();
   }
   
   public void close() {
-    if(!socket.isClosed()) {
+    if (!socket.isClosed()) {
       
       logger.info("closing ServerSocket");
       try {
@@ -73,9 +37,9 @@ public class Server
         logger.warning("Exception when closing ServerSocket: " + e.getMessage());
       }
       logger.info("ServerSocket closed");
-  
+      
       logger.info("closing Connections");
-      for(Connection c : connections) {
+      for (Connection c : connections) {
         c.close();
         connections.remove(c);
       }
@@ -83,6 +47,43 @@ public class Server
       
     } else {
       logger.warning("ServerSocket already closed");
+    }
+  }
+  
+  private class Thread
+      extends java.lang.Thread {
+    
+    @Override
+    public void run() {
+      
+      logger.info("Thread started");
+      
+      while (true) {
+        try {
+          logger.info("listening for new Connections");
+          
+          Connection c = new Connection(Server.this, socket.accept());
+          connections.add(c);
+          
+          logger.info("new Connection: " + c.toString());
+          
+        } catch (SocketException e) {
+          
+          if (socket.isClosed()) {
+            logger.info("save Thread interrupt");
+            break;
+          }
+          logger.warning("unknown Exception when accepting Connection: " + e.getMessage());
+          
+        } catch (Exception e) {
+          logger.severe("unknown Exception when accepting Connection: " + e.getMessage());
+          close();
+          break;
+        }
+      }
+      logger.info("not accepting new Connections");
+      
+      logger.info("Thread stopped");
     }
   }
   
