@@ -1,4 +1,7 @@
-# ignore IntelliJ IDEA specific content
+# ignore NetBeans specific content
 MPi3-Server
+
+# ignore IntelliJ IDEA specific content
 .idea
 MPi3-Server.iml
+out
