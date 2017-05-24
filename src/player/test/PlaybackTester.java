@@ -13,7 +13,7 @@ import java.io.IOException;
  *
  * @author benedikt
  */
-public class MediaPlayerTester {
+public class PlaybackTester {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
     }
