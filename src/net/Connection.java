@@ -1,6 +1,9 @@
 package net;
 
-import java.io.IOException;
+import net.sec.Authenticator;
+import net.sec.User;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
 
@@ -11,6 +14,7 @@ class Connection {
   
   private Server server;
   private Socket socket;
+  private Authenticator auth = Authenticator.getInstance();
   private Logger logger;
   
   Connection(Server server, Socket socket) {
@@ -35,7 +39,26 @@ class Connection {
       
       logger.info("Thread started");
       
-      // TODO
+      try {
+        
+        do {
+          
+          String message = read();
+          
+          // TODO: implement request handling
+          
+        } while(true);
+        
+      } catch (IOException e) {
+        logger.warning("IOException in Thread: " + e.getMessage());
+        
+      } catch (Exception e) {
+        logger.warning("Exception in Thread" + e.getMessage());
+        
+      } finally {
+        logger.info("not listening for new requests");
+        close();
+      }
       
       logger.info("Thread stopped");
     }
@@ -54,6 +77,64 @@ class Connection {
       
     } else {
       logger.warning("Socket already closed");
+    }
+  }
+  
+  private String read()
+      throws IOException {
+    
+    StringBuilder builder = new StringBuilder();
+    
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+      
+      String line;
+      while ((line = reader.readLine()) != null) {
+        
+        builder.append(line);
+        builder.append('\n');
+      }
+      builder.deleteCharAt(builder.length() - 1);
+      
+    } catch (IOException e) {
+      logger.warning("IOException when reading from Socket: " + e.getMessage());
+      throw e;
+    }
+    
+    return builder.toString();
+  }
+  
+  private void write(String message)
+      throws IOException {
+    
+    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
+      
+      writer.write(message);
+      writer.newLine();
+      writer.flush();
+      
+    } catch (IOException e) {
+      logger.warning("IOException when writing to Socket: " + e.getMessage());
+      throw e;
+    }
+  }
+  
+  private void initSession()
+      throws Exception {
+    
+    String message = read();
+    
+    if (message.equals("DEERE")) {
+      throw new Exception("initialization of Session failed");
+    }
+    
+    write("AUTH");
+    message = read();
+    
+    User user = null;
+    // TODO: implement parse User
+    
+    if(!auth.isValid(user)) {
+      throw new Exception("initial authentication of Session failed");
     }
   }
   
