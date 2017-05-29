@@ -1,5 +1,8 @@
 # ignore NetBeans specific content
-MPi3-Server
+build
+nbproject
+build.xml
+manifest.mf
 
 # ignore IntelliJ IDEA specific content
 .idea
