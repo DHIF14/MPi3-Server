@@ -26,7 +26,7 @@ public class Playback {
     public void playSong(Song song) 
             throws FileNotFoundException{
         try {
-            InputStream in = new FileInputStream(song.path);
+            InputStream in = new FileInputStream(song.getPath());
             AudioStream audioStream = new AudioStream(in);
             AudioPlayer.player.start(audioStream);
         } catch (IOException e) {
