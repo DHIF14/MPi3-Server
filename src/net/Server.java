@@ -15,12 +15,16 @@ public class Server {
   private ServerSocket socket;
   private List<Connection> connections = new ArrayList<>();
   private Logger logger;
+  private Logger connectionLogger;
   
   public Server(int port)
       throws IOException {
     
     socket = new ServerSocket(port);
+    
     logger = Logger.getLogger("Server[" + port + "]");
+    connectionLogger = Logger.getLogger("Connection[" + port + "]");
+    connectionLogger.setParent(logger);
     
     logger.info("init");
     
@@ -87,7 +91,7 @@ public class Server {
     }
   }
   
-  Logger getLogger() { return logger; }
+  Logger getLogger() { return connectionLogger; }
   
   @Override
   public String toString() {

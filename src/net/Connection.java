@@ -22,8 +22,7 @@ class Connection {
     this.server = server;
     this.socket = socket;
     
-    logger = Logger.getLogger("Connection");
-    logger.setParent(server.getLogger());
+    logger = server.getLogger();
     
     logger.info("init");
     
@@ -123,7 +122,7 @@ class Connection {
     
     String message = read();
     
-    if (message.equals("DEERE")) {
+    if (message.equals("DEEERE")) {
       throw new Exception("initialization of Session failed");
     }
     
