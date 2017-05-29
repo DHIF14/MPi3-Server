@@ -5,7 +5,7 @@ package player;
  */
 public class Song {
     private final String name;
-    private final String path;
+    private String path;
 
     public Song(String name, String path) {
         this.name = name;
