@@ -20,13 +20,10 @@ public class User {
   }
   
   public User(String name, String password) {
-    this(name, Hash.SHA256(password.getBytes(StandardCharsets.UTF_8)));
+    this(name, Hash.SHA256(password));
   }
   
-  public boolean isPassword(String password) {
-    
-    return isPassword(Hash.SHA256(password.getBytes(StandardCharsets.UTF_8)));
-  }
+  public boolean isPassword(String password) { return isPassword(Hash.SHA256(password)); }
   
   boolean isPassword(byte[] sha256) { return Arrays.equals(password, sha256); }
   

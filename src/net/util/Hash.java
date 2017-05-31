@@ -1,6 +1,7 @@
 package net.util;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Logger;
@@ -24,6 +25,10 @@ public class Hash {
   
   public static byte[] SHA256(byte[] input) {
     return sha256.digest(input);
+  }
+  
+  public static byte[] SHA256(String input) {
+    return SHA256(input.getBytes(StandardCharsets.UTF_8));
   }
   
   public static byte[] hexToRaw(String hex) {
