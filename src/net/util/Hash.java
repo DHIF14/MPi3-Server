@@ -26,6 +26,11 @@ public class Hash {
   }
   
   public static byte[] hexToRaw(String hex) {
+    
+    if(!hex.matches("([a-fA-F\\d])+")) {
+      return new byte[0];
+    }
+  
     return new BigInteger(hex, 16).toByteArray();
   }
 }

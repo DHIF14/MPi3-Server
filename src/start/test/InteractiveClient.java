@@ -20,7 +20,7 @@ public class InteractiveClient {
     Scanner cli = new Scanner(System.in);
     String line;
     
-    while(true) {
+    while(!socket.isClosed()) {
       
       line = cli.nextLine();
       
