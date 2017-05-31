@@ -2,6 +2,8 @@ package net;
 
 import net.sec.Authenticator;
 import net.sec.User;
+import net.util.JSON;
+import org.json.JSONException;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,6 +16,9 @@ class Connection {
   
   private Server server;
   private Socket socket;
+  private BufferedReader reader;
+  private BufferedWriter writer;
+  
   private Authenticator auth = Authenticator.getInstance();
   private Logger logger;
   
@@ -23,7 +28,6 @@ class Connection {
     this.socket = socket;
     
     logger = server.getLogger();
-    
     logger.info("init");
     
     Thread thread = new Thread();
@@ -40,6 +44,11 @@ class Connection {
       
       try {
         
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        
+        initSession();
+        
         do {
           
           String message = read();
@@ -52,7 +61,8 @@ class Connection {
         logger.warning("IOException in Thread: " + e.getMessage());
         
       } catch (Exception e) {
-        logger.warning("Exception in Thread" + e.getMessage());
+        logger.warning("Exception in Thread: " + e.getMessage());
+        e.printStackTrace();
         
       } finally {
         logger.info("not listening for new requests");
@@ -82,30 +92,22 @@ class Connection {
   private String read()
       throws IOException {
     
-    StringBuilder builder = new StringBuilder();
-    
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+    try {
       
-      String line;
-      while ((line = reader.readLine()) != null) {
-        
-        builder.append(line);
-        builder.append('\n');
-      }
-      builder.deleteCharAt(builder.length() - 1);
+      return reader.readLine();
       
     } catch (IOException e) {
       logger.warning("IOException when reading from Socket: " + e.getMessage());
       throw e;
     }
-    
-    return builder.toString();
   }
   
   private void write(String message)
       throws IOException {
     
-    try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
+    message = message.replaceAll("\n", "");
+    
+    try {
       
       writer.write(message);
       writer.newLine();
@@ -122,19 +124,25 @@ class Connection {
     
     String message = read();
     
-    if (message.equals("DEEERE")) {
-      throw new Exception("initialization of Session failed");
+    if (!message.equals("DEEERE")) {
+      throw new Exception("illegal initialization message");
     }
     
     write("AUTH");
     message = read();
     
-    User user = null;
-    // TODO: implement parse User
+    // Authentication
+    User user = JSON.parseUser(message);
     
     if(!auth.isValid(user)) {
-      throw new Exception("initial authentication of Session failed");
+      write("PUTZFRAU?");
+      throw new Exception("authentication failed");
     }
+    
+    logger.info("authentication successful");
+    write("DEEERE");
+    
+    logger.info("session initialization successful");
   }
   
   @Override

@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 /**
@@ -42,15 +43,18 @@ public class Server {
       }
       logger.info("ServerSocket closed");
       
+    } else {
+      logger.warning("ServerSocket already closed");
+    }
+  
+    if(!connections.isEmpty()) {
+      
       logger.info("closing Connections");
       for (Connection c : connections) {
         c.close();
         connections.remove(c);
       }
       logger.info("Connections closed");
-      
-    } else {
-      logger.warning("ServerSocket already closed");
     }
   }
   
