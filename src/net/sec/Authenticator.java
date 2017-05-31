@@ -18,6 +18,7 @@ public final class Authenticator {
   private static final Path USER_DB = Paths.get("/home/michael/user-db");
   
   private static Authenticator instance = new Authenticator();
+  
   public static Authenticator getInstance() { return instance; }
   
   private List<User> users = new ArrayList<>();
@@ -33,16 +34,16 @@ public final class Authenticator {
   
   private void initUsers() {
     
-    try (BufferedReader reader = Files.newBufferedReader(USER_DB) ){
+    try (BufferedReader reader = Files.newBufferedReader(USER_DB)) {
       
       String line;
-      while((line = reader.readLine()) != null) {
+      while ((line = reader.readLine()) != null) {
         
         // Comments
-        if(line.startsWith("#")) continue;
+        if (line.startsWith("#") || line.isEmpty()) continue;
         
         String[] col = line.split(":");
-        if(col.length != 2) throw new Exception("illegal user-db format");
+        if (col.length != 2) throw new Exception("illegal user-db format");
         
         String name = col[0];
         byte[] pw = Hash.hexToRaw(col[1]);

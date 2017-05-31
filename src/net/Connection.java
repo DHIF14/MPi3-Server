@@ -3,7 +3,6 @@ package net;
 import net.sec.Authenticator;
 import net.sec.User;
 import net.util.JSON;
-import org.json.JSONException;
 
 import java.io.*;
 import java.net.Socket;
@@ -55,7 +54,7 @@ class Connection {
           
           // TODO: implement request handling
           
-        } while(true);
+        } while (true);
         
       } catch (IOException e) {
         logger.warning("IOException in Thread: " + e.getMessage());
@@ -134,7 +133,7 @@ class Connection {
     // Authentication
     User user = JSON.parseUser(message);
     
-    if(!auth.isValid(user)) {
+    if (!auth.isValid(user)) {
       write("PUTZFRAU?");
       throw new Exception("authentication failed");
     }

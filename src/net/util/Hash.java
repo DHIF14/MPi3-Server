@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 public class Hash {
   
   private static MessageDigest sha256;
+  
   static {
     try {
       sha256 = MessageDigest.getInstance("SHA-256");
@@ -27,10 +28,10 @@ public class Hash {
   
   public static byte[] hexToRaw(String hex) {
     
-    if(!hex.matches("([a-fA-F\\d])+")) {
+    if (!hex.matches("([a-fA-F\\d])+")) {
       return new byte[0];
     }
-  
+    
     return new BigInteger(hex, 16).toByteArray();
   }
 }
