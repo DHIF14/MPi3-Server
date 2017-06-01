@@ -11,6 +11,11 @@ public class Song {
         this.name = name;
         this.path = path;
     }
+    
+    public Song(String path){
+        this.path=path;
+        this.name=path.split("/")[path.split("/").length-1];
+    }
 
     public String getName() {
         return name;

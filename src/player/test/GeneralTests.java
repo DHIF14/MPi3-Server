@@ -6,9 +6,10 @@
 package player.test;
 
 import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
+import static java.lang.Thread.sleep;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -17,12 +18,23 @@ import javax.sound.sampled.Clip;
 public class GeneralTests {
     public static void main(String[] args) {
         try {
-        Clip clip = AudioSystem.getClip();
-        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("songs/bitch_ass_in_kitchen_z.wav"));
-        clip.open(inputStream);
-        clip.start(); 
+        final JFXPanel fxPanel = new JFXPanel();
+        String bip = "songs/alabama_man3.wav";
+        Media hit = new Media(new File(bip).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(null);
+        mediaPlayer.play();
+        System.out.println(mediaPlayer.getCurrentTime());
+        sleep(3000);
+        mediaPlayer.pause();
+        System.out.println(mediaPlayer.getCurrentTime());
+        sleep(3000);
+        mediaPlayer.play();
+        System.out.println(mediaPlayer.getCurrentTime());
+        sleep(3000);
+        System.out.println(mediaPlayer.getCurrentTime());
       } catch (Exception e) {
-        System.err.println(e.getMessage());
+        System.out.println("Error with playing sound.");
+        e.printStackTrace();
       }
     }
 }

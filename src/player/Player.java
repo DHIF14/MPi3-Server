@@ -18,11 +18,19 @@ public class Player {
         return instance;
     }
     
-    public void addToQueue(Song s){
+    public synchronized void addToQueue(Song s){
         queue.add(s);
     }
     
     public void play(){
+        
+    }
+    
+    public void stop(){
+        
+    }
+    
+    public synchronized void skipSong(){
         
     }
 }

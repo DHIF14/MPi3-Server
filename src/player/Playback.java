@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.lang.Thread.State;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayerBuilder;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
 
@@ -16,15 +19,12 @@ import sun.audio.AudioStream;
 public class Playback {
     private static final Playback instance=new Playback();
     private final Logger logger;
-    private final AudioPlayer player;
-    private AudioStream currentStream;
-    private Boolean isPlaying;
-    private Song currentSong;
+    private final JFXPanel fxPanel = new JFXPanel();
+    private final MediaPlayer mediaPlayer;
     
     private Playback(){
-        this.isPlaying=false;
-        this.player=AudioPlayer.player;
         this.logger=Logger.getLogger("Playback");
+        this.mediaPlayer=MediaPlayerBuilder.create().build();
     };
     
     public static Playback getInstance(){
@@ -33,28 +33,14 @@ public class Playback {
     
     public void playSong(Song song) 
             throws FileNotFoundException{
-        try {
-            currentSong=song;
-            InputStream in = new FileInputStream(currentSong.getPath());
-            currentStream = new AudioStream(in);
-            player.start(currentStream);
-            isPlaying=true;
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Exception thrown when creating a new AudioStream: {0}", e.getMessage());
-        }
+        
     }
     
     public void stopPlaying(){
-        player.stop(currentStream);
-        isPlaying=false;
+        
     }
     
     public void resumePlaying(){
-        player.start(currentStream);
-        isPlaying=true;
-    }
-    
-    public Boolean isPlaying(){
-        return isPlaying;
+        
     }
 }
