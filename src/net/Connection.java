@@ -61,7 +61,6 @@ class Connection {
         
       } catch (Exception e) {
         logger.warning("Exception in Thread: " + e.getMessage());
-        e.printStackTrace();
         
       } finally {
         logger.info("not listening for new requests");
@@ -93,7 +92,8 @@ class Connection {
     
     try {
       
-      return reader.readLine();
+      String line = reader.readLine();
+      return line == null ? "" : line;
       
     } catch (IOException e) {
       logger.warning("IOException when reading from Socket: " + e.getMessage());
@@ -103,7 +103,11 @@ class Connection {
   
   private void write(String message)
       throws IOException {
-    
+
+    if(message == null) {
+      message = "";
+    }
+
     message = message.replaceAll("\n", "");
     
     try {
