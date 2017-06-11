@@ -1,5 +1,6 @@
 package player;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -8,10 +9,13 @@ import java.util.Queue;
 public class Player {
     private Queue<Song> queue;
     private static final Player instance=new Player();
+    private final Playback playback;
     private Playback player;
     
     private Player(){
         player=Playback.getInstance();
+        this.playback=Playback.getInstance();
+        this.queue=new LinkedList<>();
     };
     
     public static Player getInstance(){
@@ -23,14 +27,18 @@ public class Player {
     }
     
     public void play(){
-        
+        playback.resumePlaying();
     }
     
     public void stop(){
-        
+        playback.stopPlaying();
     }
     
-    public synchronized void skipSong(){
+    public synchronized void playNextSong(){
+        try {
+            playback.playSong(queue.poll());
+        } catch (Exception e) {
+        }
         
     }
 }
