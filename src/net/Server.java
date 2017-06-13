@@ -25,8 +25,10 @@ public class Server {
     socket = new ServerSocket(port);
     
     logger = Logger.getLogger("Server[" + port + "]");
+    logger.setUseParentHandlers(false);
     logger.addHandler(new StreamHandler(System.out, new SimpleFormatter()));
     connectionLogger = Logger.getLogger("Connection[" + port + "]");
+    connectionLogger.setUseParentHandlers(true);
     connectionLogger.setParent(logger);
     
     logger.info("init");
