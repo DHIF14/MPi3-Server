@@ -66,11 +66,10 @@ public class Song {
   @Override
   public boolean equals(Object o) {
     
+    if(this == o) return true;
     if(!(o instanceof Song)) return false;
     
     Song other = (Song) o;
-    if(!other.getName().equalsIgnoreCase(this.getName())) return false;
-    
-    return true;
+    return other.getName().equalsIgnoreCase(this.getName());
   }
 }
