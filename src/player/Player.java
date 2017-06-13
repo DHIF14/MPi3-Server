@@ -11,11 +11,13 @@ public class Player {
     private static final Player instance=new Player();
     private final Playback playback;
     private Playback player;
+    private boolean init;
     
     private Player(){
         player=Playback.getInstance();
         this.playback=Playback.getInstance();
         this.queue=new LinkedList<>();
+        this.init=false;
     };
     
     public static Player getInstance(){
@@ -27,7 +29,17 @@ public class Player {
     }
     
     public void play(){
-        playback.resumePlaying();
+        try {
+            if(init==false){
+            playback.playSong(queue.poll());
+            }
+            else{
+                playback.resumePlaying();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        
     }
     
     public void stop(){
@@ -36,9 +48,16 @@ public class Player {
     
     public synchronized void playNextSong(){
         try {
+            init=true;
             playback.playSong(queue.poll());
         } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
-        
     }
+
+    public Queue<Song> getQueue() {
+        return queue;
+    }
+    
+    
 }
