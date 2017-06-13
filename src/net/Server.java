@@ -6,6 +6,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 
 /**
  * Created by Michael Krickl and Benedikt Breid in 2017.
@@ -23,6 +25,7 @@ public class Server {
     socket = new ServerSocket(port);
     
     logger = Logger.getLogger("Server[" + port + "]");
+    logger.addHandler(new StreamHandler(System.out, new SimpleFormatter()));
     connectionLogger = Logger.getLogger("Connection[" + port + "]");
     connectionLogger.setParent(logger);
     
