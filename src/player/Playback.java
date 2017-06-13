@@ -37,7 +37,7 @@ public class Playback {
         if(mediaPlayer!=null){
             mediaPlayer.stop();  
         }
-        mediaPlayer=new MediaPlayer(new Media(new File(song.getPath()).toURI().toString()));
+        mediaPlayer=new MediaPlayer(new Media(song.getPath().toAbsolutePath().toString()));
         mediaPlayer.play();
     }
     
