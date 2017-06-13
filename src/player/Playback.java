@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.Thread.State;
+import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.JFXPanel;
@@ -37,7 +38,7 @@ public class Playback {
         if(mediaPlayer!=null){
             mediaPlayer.stop();  
         }
-        mediaPlayer=new MediaPlayer(new Media(song.getPath().toAbsolutePath().toString()));
+        mediaPlayer=new MediaPlayer(new Media(song.getPath().toUri().toString()));
         mediaPlayer.play();
     }
     

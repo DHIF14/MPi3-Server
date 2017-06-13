@@ -46,12 +46,13 @@ public class Song {
   }
   
   // deprecated?
-  public Song(String path) {
+  /*public Song(String path) {
     this(Paths.get(path));
-  }
+  }*/
   
-  private Song(Path path) {
-    this.path = SONGS_ROOT.relativize(path);
+  public Song(Path path) {
+    //this.path = SONGS_ROOT.relativize(path);
+    this.path=path.toAbsolutePath();
     this.name = path.getFileName().toString().replaceAll("\\..*", "");
   }
   

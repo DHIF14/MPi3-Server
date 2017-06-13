@@ -16,18 +16,11 @@ import player.Song;
 public class PlayerTester {
     public static void main(String[] args) throws InterruptedException {
         Player player=Player.getInstance();
-        player.addToQueue(new Song("songs/alabama_man3.wav"));
-        player.addToQueue(new Song("songs/bitch_ass_in_kitchen_z.wav"));
-        player.addToQueue(new Song("songs/alabama_man3.wav"));
-        player.addToQueue(new Song("songs/bitch_ass_in_kitchen_z.wav"));
+        player.addToQueue(Song.getSongByName("alabama_man3"));
+        //player.addToQueue(new Song("songs/bitch_ass_in_kitchen_z.wav"));
+        //player.addToQueue(new Song("songs/alabama_man3.wav"));
+        //player.addToQueue(new Song("songs/bitch_ass_in_kitchen_z.wav"));
         player.playNextSong();
-        sleep(2000);
-        player.playNextSong();
-        sleep(2000);
-        player.playNextSong();
-        sleep(2000);
-        player.playNextSong();
-        sleep(2000);
     }
     
 }

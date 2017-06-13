@@ -7,6 +7,7 @@ package player.test;
 
 import java.io.FileNotFoundException;
 import static java.lang.Thread.sleep;
+import java.nio.file.Paths;
 import player.Playback;
 import player.Song;
 
@@ -19,8 +20,6 @@ public class PlaybackTester {
     public static void main(String[] args)
             throws FileNotFoundException, InterruptedException{
         Playback playback=Playback.getInstance();
-        playback.playSong(new Song("songs/bitch_ass_in_kitchen_z.wav"));
-        sleep(1000);
-        playback.playSong(new Song("songs/alabama_man3.wav"));
+        playback.playSong(new Song(Paths.get("/home/mpi3/songs/bitch_ass_in_kitchen_z.wav")));
     }
 }
