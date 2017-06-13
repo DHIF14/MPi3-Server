@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public final class Authenticator {
   
-  private static final Path USER_DB = Paths.get("/home/michael/user-db");
+  private static final Path USER_DB = Paths.get("/home/mpi3/user-db");
   
   private static Authenticator instance = new Authenticator();
   
