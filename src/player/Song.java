@@ -51,7 +51,7 @@ public class Song {
   }
   
   private Song(Path path) {
-    this.path = path;
+    this.path = SONGS_ROOT.relativize(path);
     this.name = path.getFileName().toString().replaceAll("\\..*", "");
   }
   

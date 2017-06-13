@@ -125,10 +125,10 @@ class Connection {
       case "NEXT_SONG_PLZ":
         handleNextSong();
         break;
-      case "CONTINUE_PLAYING_PLZ":
+      case "PLAY":
         handlePlay();
         break;
-      case "STOP_THIS_SHEEET":
+      case "PAUSE":
         handlePause();
         break;
       case "BRING_THAT_BEAT_BACK":

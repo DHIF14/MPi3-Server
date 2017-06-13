@@ -37,8 +37,8 @@ public class JSON {
     try {
       JSONObject j = new JSONObject(json);
       
-      String path = j.get("path").toString();
-      song = Song.getSongByPath(Paths.get(path));
+      String name = j.get("name").toString();
+      song = Song.getSongByName(name);
       
     } catch (JSONException e) {
       throw new Exception("illegal JSON in parseSong: " + e.getMessage(), e);
