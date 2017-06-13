@@ -3,6 +3,8 @@ package net;
 import net.sec.Authenticator;
 import net.sec.User;
 import net.util.JSON;
+import player.Player;
+import player.Song;
 
 import java.io.*;
 import java.net.Socket;
@@ -21,6 +23,8 @@ class Connection {
   private Authenticator auth = Authenticator.getInstance();
   private Logger logger;
   
+  private Player player = Player.getInstance();
+  
   Connection(Server server, Socket socket) {
     
     this.server = server;
@@ -32,43 +36,6 @@ class Connection {
     Thread thread = new Thread();
     thread.setDaemon(true);
     thread.start();
-  }
-  
-  private class Thread
-      extends java.lang.Thread {
-    @Override
-    public void run() {
-      
-      logger.info("Thread started");
-      
-      try {
-        
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        
-        initSession();
-        
-        do {
-          
-          String message = read();
-          
-          // TODO: implement request handling
-          
-        } while (true);
-        
-      } catch (IOException e) {
-        logger.warning("IOException in Thread: " + e.getMessage());
-        
-      } catch (Exception e) {
-        logger.warning("Exception in Thread: " + e.getMessage());
-        
-      } finally {
-        logger.info("not listening for new requests");
-        close();
-      }
-      
-      logger.info("Thread stopped");
-    }
   }
   
   void close() {
@@ -103,11 +70,11 @@ class Connection {
   
   private void write(String message)
       throws IOException {
-
-    if(message == null) {
+    
+    if (message == null) {
       message = "";
     }
-
+    
     message = message.replaceAll("\n", "");
     
     try {
@@ -148,6 +115,76 @@ class Connection {
     logger.info("session initialization successful");
   }
   
+  private void handleRequest(String request)
+      throws Exception {
+    
+    switch (request.toUpperCase()) {
+      case "PLAY_SONG_PLZ":
+        handlePlaySong();
+        break;
+      case "NEXT_SONG_PLZ":
+        handleNextSong();
+        break;
+      case "CONTINUE_PLAYING_PLZ":
+        handlePlay();
+        break;
+      case "STOP_THIS_SHEEET":
+        handlePause();
+        break;
+      case "BRING_THAT_BEAT_BACK":
+        handleVolume();
+        break;
+      
+      default:
+        throw new Exception("unknown command");
+    }
+    
+  }
+  
+  private void handlePlaySong()
+      throws Exception {
+    
+    write("GIMME");
+    
+    Song song = JSON.parseSong(read());
+    player.addToQueue(song);
+    
+    write("K");
+  }
+  
+  private void handleNextSong()
+      throws IOException {
+    
+    player.playNextSong();
+    write("K");
+  }
+  
+  private void handlePlay()
+      throws IOException {
+    
+    player.play();
+    write("K");
+  }
+  
+  private void handlePause()
+      throws IOException {
+    
+    player.stop();
+    write("K");
+  }
+  
+  private void handleVolume()
+      throws IOException {
+    
+    // TODO Bene anmaulen
+    write("K");
+  }
+  
+  @Override
+  public String toString() {
+    return String.format("Connection[Socket:%s]", socket.toString());
+  }
+  
   @Override
   protected void finalize()
       throws Throwable {
@@ -157,8 +194,39 @@ class Connection {
     }
   }
   
-  @Override
-  public String toString() {
-    return String.format("Connection[Socket:%s]", socket.toString());
+  private class Thread
+      extends java.lang.Thread {
+    @Override
+    public void run() {
+      
+      logger.info("Thread started");
+      
+      try {
+        
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        
+        initSession();
+        
+        do {
+          
+          String message = read();
+          handleRequest(message);
+          
+        } while (true);
+        
+      } catch (IOException e) {
+        logger.warning("IOException in Thread: " + e.getMessage());
+        
+      } catch (Exception e) {
+        logger.warning("Exception in Thread: " + e.getMessage());
+        
+      } finally {
+        logger.info("not listening for new requests");
+        close();
+      }
+      
+      logger.info("Thread stopped");
+    }
   }
 }

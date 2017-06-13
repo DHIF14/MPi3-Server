@@ -3,6 +3,9 @@ package net.util;
 import net.sec.User;
 import org.json.JSONException;
 import org.json.JSONObject;
+import player.Song;
+
+import java.nio.file.Paths;
 
 /**
  * Created by Michael Krickl in 2017.
@@ -22,7 +25,29 @@ public class JSON {
       return new User(name, pw);
       
     } catch (JSONException e) {
-      throw new Exception("illegal JSON in parse user: " + e.getMessage(), e);
+      throw new Exception("illegal JSON in parseUser: " + e.getMessage(), e);
     }
+  }
+  
+  public static Song parseSong(String json)
+      throws Exception {
+    
+    Song song;
+    
+    try {
+      JSONObject j = new JSONObject(json);
+      
+      String path = j.get("path").toString();
+      song = Song.getSongByPath(Paths.get(path));
+      
+    } catch (JSONException e) {
+      throw new Exception("illegal JSON in parseSong: " + e.getMessage(), e);
+    }
+    
+    if (song == null) {
+      throw new Exception("no such Song");
+    }
+    
+    return song;
   }
 }
