@@ -31,7 +31,8 @@ public class Player {
     public void play(){
         try {
             if(init==false){
-            playback.playSong(queue.poll());
+                playback.playSong(queue.poll());
+                init=true;
             }
             else{
                 playback.resumePlaying();
