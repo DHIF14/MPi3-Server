@@ -19,8 +19,8 @@ public class PlaybackTester {
     public static void main(String[] args)
             throws FileNotFoundException, InterruptedException{
         Playback playback=Playback.getInstance();
-        playback.playSong(new Song("Test","songs/bitch_ass_in_kitchen_z.wav"));
+        playback.playSong(new Song("songs/bitch_ass_in_kitchen_z.wav"));
         sleep(1000);
-        playback.playSong(new Song("Test","songs/alabama_man3.wav"));
+        playback.playSong(new Song("songs/alabama_man3.wav"));
     }
 }

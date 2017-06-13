@@ -46,14 +46,13 @@ public class Song {
   }
   
   // deprecated?
-  public Song(String name, String path) {
-    this.name = name;
-    this.path = Paths.get(toString());
+  public Song(String path) {
+    this(Paths.get(path));
   }
   
   private Song(Path path) {
     this.path = path;
-    this.name = path.getFileName().toString();
+    this.name = path.getFileName().toString().replaceAll("\\..*", "");
   }
   
   public String getName() {
