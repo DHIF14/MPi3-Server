@@ -33,12 +33,17 @@ public class Playback {
         return instance;
     }
     
+    private void initMediaPlayer(Media media){
+        mediaPlayer=new MediaPlayer(media);
+        mediaPlayer.setOnEndOfMedia(new OnEndOfMedia());
+    }
+    
     public void playSong(Song song) 
             throws FileNotFoundException{
         if(mediaPlayer!=null){
             mediaPlayer.stop();  
         }
-        mediaPlayer=new MediaPlayer(new Media(song.getPath().toUri().toString()));
+        initMediaPlayer(new Media(song.getPath().toUri().toString()));
         mediaPlayer.play();
     }
     
@@ -48,5 +53,15 @@ public class Playback {
     
     public void resumePlaying(){
         mediaPlayer.play();
+    }
+   
+    public void changeVolume(double vol){
+        mediaPlayer.setVolume(vol);
+    }
+    
+    public void setTimeToZero(){
+        Media helpi=mediaPlayer.getMedia();
+        mediaPlayer.stop();
+        initMediaPlayer(helpi);
     }
 }

@@ -60,5 +60,15 @@ public class Player {
         return queue;
     }
     
+    public void changeVolume(double vol)
+            throws Exception{
+        if(vol<0||vol>1){
+            throw new Exception("Volume must be a value between 0 and 1");
+        }
+        playback.changeVolume(vol);
+    }
     
+    public void goToStartOfSong(){
+        playback.setTimeToZero();
+    }
 }
