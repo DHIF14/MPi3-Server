@@ -36,6 +36,7 @@ public class Playback {
     private void initMediaPlayer(Media media){
         mediaPlayer=new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(new OnEndOfMedia());
+        mediaPlayer.setVolume(0.5);
     }
     
     public void playSong(Song song) 

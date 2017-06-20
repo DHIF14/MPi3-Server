@@ -12,12 +12,14 @@ public class Player {
     private final Playback playback;
     private Playback player;
     private boolean init;
+    private State state;
     
     private Player(){
         player=Playback.getInstance();
         this.playback=Playback.getInstance();
         this.queue=new LinkedList<>();
         this.init=false;
+        state=new State();
     };
     
     public static Player getInstance(){
@@ -37,6 +39,7 @@ public class Player {
             else{
                 playback.resumePlaying();
             }
+            state.isPlaying=true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -51,6 +54,7 @@ public class Player {
         try {
             init=true;
             playback.playSong(queue.poll());
+            state.isPlaying=true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -66,9 +70,39 @@ public class Player {
             throw new Exception("Volume must be a value between 0 and 1");
         }
         playback.changeVolume(vol);
+        state.volume=vol;
     }
     
     public void goToStartOfSong(){
         playback.setTimeToZero();
+        state.isPlaying=false;
+    }
+    
+    private class State {
+        private boolean isPlaying;
+        private double volume;
+        
+        public State(){
+            isPlaying=false;
+            volume=0.5;
+        }
+
+        public void setIsPlaying(boolean isPlaying) {
+            this.isPlaying = isPlaying;
+        }
+
+        public void setVolume(double volume) {
+            this.volume = volume;
+        }
+
+        public boolean isPlaying() {
+            return isPlaying;
+        }
+
+        public double getVolume() {
+            return volume;
+        }
+        
+        
     }
 }
